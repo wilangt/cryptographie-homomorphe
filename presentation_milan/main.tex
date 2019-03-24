@@ -1,0 +1,60 @@
+
+\RequirePackage{currfile} 
+
+\documentclass{beamer}
+
+\definecolor{rougeb}{rgb}{0.75,0.01,0}
+
+%\setbeamercolor{subsection in toc}{fg=red} %change la couleur de la ToC
+\setbeamerfont{section number projected}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamercolor{section number projected}{bg=rougeb,fg=white}
+\setbeamerfont{subsection number projected}{family=\rmfamily,series=\bfseries,size=\normalsize}
+\setbeamercolor{subsection number projected}{bg=rougeb,fg=white}
+
+\input{preambule/special_beamer.tex}
+
+% Les autres packages utiles  notamment pour le français, les accents ou Python
+\input{preambule/autres_packages.tex}
+
+% Les macros et raccourcis personnels
+\input{preambule/macros.tex}
+
+% On définit le titre et l'auteur du document
+
+\title[Cryptographie homomorphe]{Étude et implémentation d'un schéma de chiffrement homomorphe}
+\author{Milan \textsc{Gonzalez-Thauvin}}
+\institute[ ]{Thème : Transport}
+\date{TIPE session 2019}
+
+% On démarre le document proprement dit
+\begin{document}
+
+% Rien d'autre à faire qu'afficher le titre
+\begin{frame}
+\titlepage 
+\end{frame}
+
+
+% La table des matières utilise ce que vous donnez aux commandes \section et 
+% \subsection tout au long de la présentation.
+\begin{frame}
+\frametitle{Plan de l'exposé} 
+\tableofcontents 
+\end{frame}
+
+% Introduction
+\input{slides/1_Introduction.tex}
+
+% Schéma
+\input{slides/2_schema.tex}
+
+% Implémentation
+\input{slides/3_implementation.tex}
+
+% Améliorations
+\input{slides/4_ameliorations.tex}
+
+% Application
+\input{slides/5_appication.tex}
+
+\end{document}
