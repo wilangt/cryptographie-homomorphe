@@ -1,19 +1,97 @@
 \section{Améliorations}
 
-\subsection{Surcouche}
+\begin{frame}{Améliorations}
+    
+\end{frame}{}
+
+\subsection{Code et Surcouche}
 
 \begin{frame}
-\frametitle{Surcouche}
+\frametitle{Code et Surcouche}
+\begin{alertblock}{But}
+\begin{itemize}
+    \item Simplifier l'\textbf{utilisation} du schéma
+    \item Faciliter son \textbf{debugage} et son amélioration
+    %\item Donc faciliter son amélioration (fonctions annexes)
+    \item Permettre à d'\textbf{autres personnes} d'utiliser le schéma 
+\end{itemize}{}
+\end{alertblock}
+\begin{alertblock}{Moyen}
+    Tout un \textbf{écosystème} (notamment \textbf{opérations} bit à bit, \textbf{Classes} Python, fonctions regroupant les \textbf{opérations de base})
+\end{alertblock}{}
 \end{frame}
 
-\subsection{Performances}
+\begin{frame}{Code et Surcouche}
+\begin{alertblock}{Résultat}
+Un code clair, concis, et facile d'utilisation
+%ici ajouter capture d'écran
+\end{alertblock}{}
+
+\begin{alertblock}{Code}
+    \lstinputlisting[language=Python]{images/code_clair.py}
+\end{alertblock}{} 
+ 
+\end{frame}{}
+
+\subsection{Paramètres}
 
 \begin{frame}
 \frametitle{Paramètres}
+\begin{alertblock}{Idée}
+    Trouver les paramètres pour rendre le schéma :
+    \begin{itemize}
+        \item Plus \textbf{rapide}
+        \item Plus \textbf{fiable} (possibilité d'effectuer plus d'opération)
+        
+    \end{itemize}{}
+    pour un même paramètre de sécurité $\lambda$
+\end{alertblock}{}
+\begin{alertblock}{Moyen}
+    Fonctions permettant de tester et comparer les performances du schéma en faisant varier certains paramètres
+\end{alertblock}{}
 \end{frame}
 
-\subsection{Sécurité}
+%schémas de l'amélioration
 
-\begin{frame}
-\frametitle{Génération des clefs}
+\begin{frame}{Paramètres}
+
+\begin{alertblock}{Paramètres pertinents}
+	    $\rho = \lambda$ \\
+	    $\eta = \lfloor \rho + \operatorname{log}_2  (\lambda) \rfloor $ \\
+	    $\gamma = \lfloor 1,05* \eta \rfloor $ \\
+	    $\tau = \gamma + 2*\lambda + 2$
+\end{alertblock}{}
+
+ \begin{alertblock}{Résultat}
+     \ \\ - \ \textbf{Sécurité} $\ \searrow $ \\ \\
+     + \ \textbf{Fiabilité} $\ \nearrow$ \\
+ \end{alertblock}{}   
 \end{frame}
+
+\subsection{Génération des clefs}
+
+\begin{frame}{Génération des clefs}
+ \begin{alertblock}{Cause}
+     \begin{itemize}
+         \item Nombre d'opérations faible (même après le changement de paramètres)
+         \item Qualité des clefs aléatoire (dont certaines obsolètes)
+     \end{itemize}{}
+ \end{alertblock}{}  
+ \begin{alertblock}{Idée}
+     Fonction qui génère de nombreuses paires de clefs jusqu'à en trouver une satisfaisante
+ \end{alertblock}{}
+\end{frame}
+
+\begin{frame}{Génération des clefs}
+\begin{alertblock}{Code}
+    \lstinputlisting[language=Python]{images/genererCS.py}
+\end{alertblock}{}
+\end{frame}{}
+
+\begin{frame}{Génération des clefs}
+ \begin{alertblock}{Résultat}
+     \ \\ - \textbf{Temps de génération des clefs} $\ \nearrow $ \\ \\
+     + \ \textbf{Fiabilité} $\ \nearrow$ \\
+     + \ \textbf{Sécurité} $\ \nearrow$ \\
+ \end{alertblock}{}   
+\end{frame}{}

@@ -1,4 +1,4 @@
-\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 %La ligne ci dessus permet de masquer les subsections de l'intro dans la ToC
 
 \section{Introduction}
@@ -8,8 +8,8 @@
 \begin{frame}
 \frametitle{Introduction}
     \begin{tikzpicture}[pin distance=1cm,every pin/.append style={font=\sffamily\itshape}]
-    \node[alice,minimum size=2cm,pin={[text width=2em]40:{enc}}] (A) at (2,2) {Alice};
-    \node[bob,mirrored, minimum size=2cm,pin={[text width=2em]140:{dec}}] (B) at (10,2) {Bob};
+    \node[alice,minimum size=2cm,pin={[text width=2em]40:{$\operatorname{enc}$}}] (A) at (2,2) {Alice};
+    \node[bob,mirrored, minimum size=2cm,pin={[text width=2em]140:{$\operatorname{dec}$}}] (B) at (10,2) {Bob};
     \node[criminal,female,minimum size=2cm] at (6,-0.5) {Eve};
     \draw [thick,->] (A) -- (B) node[midway,above] {Message secret};
     \end{tikzpicture}
@@ -25,50 +25,76 @@
     \stopchronology
 \end{frame}
 
-\subsection{Cryptographie homomorphe}
+\subsection{La Cryptographie homomorphe}
+
+\begin{frame}
+\frametitle{La cryptographie homomorphe}
+
+\begin{figure}
+\begin{tikzpicture}
+
+\node[alice, minimum size=2.1cm, xshift=-1.5cm] at (0, 2) {Alice};
+
+\draw [->] (0, 2) -- (4,2);
+\node [above] at (2,2) {Entrées chiffrées};
+
+\draw [->] (4,1) -- (0,1);
+\node [below] at (2,1) {Résultat chiffré};
+
+\node[bob, monitor, mirrored, minimum size=2.1cm, xshift=1.75cm] at (5, 2) {Bob};
+\node [above] at (6,4) {Gros calculs};
+
+\end{tikzpicture}
+\end{figure}
+
+\end{frame}
 
 \begin{frame}{La cryptographie homomorphe}
 
-\begin{block}{Définition : Calculer sur des chiffrées}
-Si $m$ est un mot clair, $m = \operatorname{enc}(m)$ son chiffré, et $f$ une fonction, $f$ est compatible pour le schéma si
-    $$\operatorname{dec}(f(m)) = f(m)$$
-\end{block}
+\begin{alertblock}{Définition : Calculer sur des chiffrés}
+Si $m$ est un mot \textbf{clair}, $c = \operatorname{enc}(m)$ son \textbf{chiffré}, et $f$ une fonction, $f$ est \textbf{compatible} pour le schéma si
+    $$\operatorname{dec}(f(c)) = f(m)$$
+\end{alertblock}
 
 \begin{alertblock}{En pratique} % Bloc alerte rouge
-Somme et produit car polynôme
+\textbf{Somme} et \textbf{produit} car \textbf{polynôme}
 \end{alertblock}
     
 \end{frame}
 
 \begin{frame}{La cryptographie homomorphe}
 
-\begin{block}{Définition : Cryptographie partiellement homomorphe}
+\begin{alertblock}{Définition : Cryptographie partiellement homomorphe}
 On peut effectuer des additions \textbf{et/ou} des multiplications en nombre \textbf{fini}
-\end{block}
+\end{alertblock}
 
-\begin{block}{Définition : Cryptographie complètement homomorphe}
+\begin{alertblock}{Définition : Cryptographie complètement homomorphe}
 On peut effectuer des additions \textbf{et} des multiplications en nombre \textbf{infini} 
-\end{block}
+\end{alertblock}
 
 \begin{alertblock}{Pourquoi fait on la distinction ?}
-La cryptographie homomorphe se base sur du bruit.
+La cryptographie homomorphe se base sur du \textbf{bruit}.
 \end{alertblock}
 
 \end{frame}
 
 \begin{frame}{La cryptographie homomorphe}
     \begin{center}
-    \includegraphics[scale=0.49]{images/generationClef.png} 
+    \includegraphics[scale=0.43]{images/exemple_reseau2.png} 
     \end{center}
 \end{frame}{}
 
 \begin{frame}{État de l'art}
-    \begin{alertblock}{Avant la Thèse de Craig Gentry (2009)}
-    Cryptographie partiellement homomorphe : OK
+    \begin{alertblock}{Avant la Thèse de Craig Gentry}
+    Cryptographie \textbf{partiellement homomorphe}
     \end{alertblock}
     \begin{alertblock}{Thèse de Craig Gentry (2009)}
-    Astuce : bootstrap
+    Astuce : \textbf{bootstrap}
     \end{alertblock}
+    \begin{alertblock}{Depuis la thèse de Craig Gentry}
+        Beaucoup de schémas \textbf{théoriques}\\
+        Aucune application concrète car \textbf{aucun n'est assez performant}
+    \end{alertblock}{}
 \end{frame}{}
 
 
