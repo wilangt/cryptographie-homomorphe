@@ -2,6 +2,8 @@
 
 TIPE réalisé pendant l'année scolaire 2018-2019 par Clément Rambaud et Milan Gonzalez-Thauvin. La présentation orale (individuelle) a été sanctionné par la note de **15,7/20** (Tétraconcours)
 
+![illustration](cryptographie_homomorphe.png)
+
 ## Motivation
 La cryptographie homomorphe est une cryptographie en pleine construction. C'est donc l'optique d'apporter ma pierre à l'édifice qui m'a poussé à choisir ce sujet. De plus, la cryptographie est une discipline mêlant mathématiques et informatique, au cœur des problématiques technologiques et sociales d'internet aujourd'hui.
 

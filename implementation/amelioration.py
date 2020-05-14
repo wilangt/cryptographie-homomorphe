@@ -205,24 +205,3 @@ def testCSbit(lambdaa,r,e):
         print("")
         m+=(j-1)
     print(m/r)
-
-"""
-    ord = list(range(debut,fin + 1, pas))
-    tab=[]
-    for i in ord:
-        m=[]
-        for j in range(r): #r représente le nombre d'essai pour lambda = i
-            p = random.randint(1,e)
-            pc = clement.chiffrerentier(p)
-            for k in range(r):
-                t = random.randint(1,e)
-                p *= t
-                pc *= clement.chiffrerentier(t)
-            m.append(p==pc)
-            #f1 = random.randint(1,e)
-            #f2 = random.randint(1,e)
-            #m.append(f1*f2==milan.dechiffrerentier(clement.chiffrerentier(f1)*clement.chiffrerentier(f2)))
-        tab.append(100*sum(m)/r)
-    for i in range(len(tab)):
-        print (i+debut, " ",tab[i])
-"""
