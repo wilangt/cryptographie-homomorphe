@@ -1,26 +1,64 @@
+#amelioration du 27/02/19
 from math import *
 import random
 from fraction import *
 from time import perf_counter as perf
+
+def genererCS(l,m):
+    """
+    fonction qui genere un cryptosysteme
+    parametres :
+    1/ lambda le parametre de securite
+    2/ m le nombre de produit bit a bit souhaite
+    renvoie alice, bob
+    """
+    clef_invalide=True
+    while clef_invalide:
+        #print("essai numero ",i)
+        milan = Prive(l)
+        clement = Publique(milan.publier())
+
+        p = random.randint(0,1)
+        pc = clement.chiffrerbit(p)
+        produit_correct = (p==milan.dechiffrerbit(pc))
+        j=0
+        #print(j,produit_correct)
+
+        while produit_correct:
+            t = random.randint(0,1)
+            p *= t
+            pc *= clement.chiffrerbit(t)
+            j+=1
+            produit_correct = (p==milan.dechiffrerbit(pc))
+            if not produit_correct : print(j)
+            if j>m :
+                return milan, clement
+                print("clefs OK")
+    print("clefs non OK")
+    return milan, clement
 
 class Prive:
     """docstring for prive."""
     def __init__(self, lambdaa):
         self.lambdaa = lambdaa
         self.genererParametres()
+
         self.genererClefs()
 
     def genererParametres(self):
         self.rho = self.lambdaa
-        self.L = 10
+        self.L = 20
         self.eta = int(self.rho + self.L*log2(self.lambdaa))
         self.gamma = int(self.eta*1.05)
-        #self.gamma = int(self.lambdaa*self.L**2*log2(self.lambdaa))
+        #self.gamma = int(self.lambdaa*self.L**2*log2(self.lambdaa))//30
         self.tau = self.gamma + 2*self.lambdaa + 2
+    def _donner_parametres(self):
+        print("rho={}, eta={}, gamma={}, tau={}".format(self.rho,
+            self.eta, self.gamma, self.tau))
 
     @staticmethod
     def D2(t):
-        return random.getrandbits(t+1)
+        return random.getrandbits(t+1)-(1<<t)  # MODIF: signe aletatoire
 
     @staticmethod
     def AAGCD(X,phi,p):
@@ -57,32 +95,35 @@ class Prive:
         return prod
 
     def genererClefs(self):
-        sigma, X, alpha = 2**(self.gamma-self.eta), 2**(self.gamma), 2**(self.rho - int(log2(self.lambdaa)/2))
-        logalpha = self.rho - int(log2(self.lambdaa)/2)
+        sigma, X= 2**(self.gamma-self.eta), 2**(self.gamma)
+        alphe =  2**(self.rho) # - int(log2(self.lambdaa)/2)) # TEST <-------------
+        logalpha = self.rho # - int(log2(self.lambdaa)/2)  #TEST
 
         # clef privee
-        p = self.D2(self.eta)
+        p = random.randrange(1, 1<<self.eta)
 
         # clef publique
         x = [0 for i in range(self.tau)]
 
-        while not(round(x[1]/p)%2==1):
-            x = [self.AAGCD(X,self.D2(logalpha),p) for i in range(self.tau+1)]
+        x = [self.AAGCD(X,self.D2(logalpha),p) for i in range(self.tau+1)]
 
-            im = 0
-            m = x[0]
-            for i, e in enumerate(x):
-                if e>m:
-                    im = i
-                    m = e
-            x[0], x[im] = x[im], x[0]
+        im = 0
+        m = x[0]
+        for i, e in enumerate(x):
+            if e>m:
+                im = i
+                m = e
+        x[0], x[im] = x[im], x[0]
+        i = 1
+        while i<=self.tau and round(Fraction(x[i],p))%2==0:
+            i += 1
 
-            i = 1
-            while i<=self.tau and round(x[i]/p)%2==0:
-                i += 1
+        if not i==self.tau+1:
+            x[1], x[i] = x[i], x[1]
 
-            if not i==self.tau+1:
-                x[1], x[i] = x[i], x[1]
+        while x[1]>=x[0] or round(Fraction(x[1],p))%2==0:
+            x[i] = self.AAGCD(X, self.D2(logalpha), p)
+
         self.sk = p
         self.pk = x
 
@@ -94,18 +135,38 @@ class Prive:
         self.mk = self.som(a, c)
 
         # clef de bootstrap
-        self.bk = 0  # TEMPORAIRE <--------------------------------------------
+        # on calcul une approxymation de z=2/p a gamma+eta
+        # bits pres puis on renvoie son chiffre
+        # les eta bits les plus significatifs sont nuls,
+        #on ne chiffre donc que les gamma autres bits
+
+        z = []
+        #a = 2**(self.eta+1)/p
+        a = 2**(self.eta)/p
+
+        self.bk = 0 # temporairement
+        # peut poser probleme: les bits de self.bk ne peuvent etre bootstrapes
+
+        for i in range(self.gamma):
+            z.append(self.chiffrerbit(int(a%2)))
+            a = (2*a)%2
+
+        self.bk = Entierchiffre(z[::-1])
+
 
     def publier(self):
         """renvoie les parametres publics"""
-        return self.pk, self.mk, self.bk, self.lambdaa, self.rho, self.eta, self.gamma, self.tau
+        return self.pk, self.mk, self.bk, self.lambdaa, self.rho,\
+                self.eta, self.gamma, self.tau
 
     def dechiffrerbit(self, c):
         return (round(2*c.c/self.sk))%2
 
+    """
     def dechiffrerfloat(self, cx):
         bits = tuple([self.dechiffrerbit(b) for b in cx.bits])
         return floatextras.from_tuple((cx.sign, bits, cx.exponent))
+    """
 
     def dechiffrerentier(self, cn):
         bits = [self.dechiffrerbit(c) for c in cn.bits]
@@ -114,21 +175,18 @@ class Prive:
             s = 2*s + b
         return s
 
-    # def chiffrer(self, m):
-    #     c = m * round(Fraction(self.pk[1], 2))
-    #     for i in range(1, self.tau+1):
-    #         if random.getrandbits(1):
-    #             c  += self.pk[i] % self.pk[0]
-    #     return c % self.pk[0]
+    def chiffrerbit(self, m):
+        c = m * round(Fraction(self.pk[1], 2))
+        for i in range(1, self.tau+1):
+            if random.getrandbits(1):
+                c  += self.pk[i] % self.pk[0]
+        return Bitchiffre(Publique(self.publier()), c % self.pk[0])
+
 
 class Publique:
-    """
-    fonctionne ainsi
-    milan = Prive(lambda)
-    clement = Publique(milan.publier())
-    """
     def __init__(self, publication):
-        self.pk, self.mk, self.bk, self.lambdaa, self.rho, self.eta, self.gamma, self.tau = publication
+        self.pk, self.mk, self.bk, self.lambdaa, self.rho, self.eta,\
+                self.gamma, self.tau = publication
 
     @staticmethod
     def prod_sca_bool(u, v): # cas ou u est une liste de 0 ou 1
@@ -161,16 +219,12 @@ class Publique:
             if random.getrandbits(1):
                 c  += self.pk[i] % self.pk[0]
         return Bitchiffre(self, c % self.pk[0])
-
+    """
     @staticmethod
     def float_to_list(x):
         d = floatextras.as_tuple(x)
         return d.sign, d.digits, d.exponent
-
-    def chiffrerfloat(self, x):
-        sign, bits, exponent = self.float_to_list(x)
-        return Floatchiffre(sign, [self.chiffrerbit(e) for e in bits], exponent)
-
+    """
     def chiffrerentier(self, x):
         bits = [self.chiffrerbit(int(c)) for c in bin(x)[2:][::-1]]
         return Entierchiffre(bits)
@@ -179,8 +233,8 @@ class Publique:
         return c1+c2 % self.pk[0]
 
     def produitbit(self, c1, c2):
-        return self.prod_sca_bool(self.prod_bool(self.BD(self.gamma, c1),
-                                  self.BD(self.gamma, c2)),self.mk) % self.pk[0]
+        return round((self.prod_sca_bool(self.prod_bool(self.BD(self.gamma, c1),
+                                  self.BD(self.gamma, c2)),self.mk)) % self.pk[0])
 
 class Bitchiffre:
     def __init__(self, publique, c): # c est le chiffre
@@ -188,58 +242,22 @@ class Bitchiffre:
         self.c = c
 
     def __add__(self, c2):
-        assert self.publique == c2.publique
+        #assert self.publique == c2.publique
         return Bitchiffre(self.publique, self.publique.sommebit(self.c, c2.c))
 
     def __mul__(self, c2):
         if type(c2)==Bitchiffre:
-            assert self.publique == c2.publique
-            return Bitchiffre(self.publique, self.publique.produitbit(self.c, c2.c))
+        #    assert self.publique == c2.publique
+            return Bitchiffre(self.publique, self.publique.produitbit(self.c,
+                                                                      c2.c))
         else:
             return c2 * self
 
-class Floatchiffre:
-    def __init__(self, sign, bits, exponent):
-        """
-        exponent: exposant LSB
-        sign: 0 pour +, 1 pour -1
-        bits: liste des bits chiffres
-        """
-        self.bits = bits
-        self.sign = sign
-        self.exponent = exponent
+    def bootstrap(self):
+        z = self.publique.bk
+        l = (self.c * z)
+        return l.bits[self.publique.eta] #[-1] #l.bits[1+self.publique.eta]
 
-    def __add__(self, c2):
-        assert self.sign==0 and c2.sign==0  # ATTENTION pas encore implemente 
-        sign = 0
-        if self.exponent>c2.exponent:
-            a = self.bits
-            b = [c2.bits[0].publique.chiffrerbit(0)]*(self.exponent-c2.exponent) + \
-                c2.bits[:-self.exponent+c2.exponent]
-            exponent = self.exponent
-        elif self.exponent<c2.exponent:
-            b = self.bits
-            a = [c2.bits[0].publique.chiffrerbit(0)]*(-self.exponent+c2.exponent) + \
-                c2.bits[:self.exponent-c2.exponent]
-            exponent = c2.exponent
-        else:
-            a = self.bits
-            b = c2.bits
-            exponent = self.exponent + 1
-
-
-        c = []
-        a = [c2.bits[0].publique.chiffrerbit(1)] + a[::-1]
-        b = [c2.bits[0].publique.chiffrerbit(1)] + b[::-1]
-        r = c2.bits[0].publique.chiffrerbit(0)
-        for i in range(0, min(len(a), len(b))):
-            temp = b[i]+r
-            c.append(a[i]+temp)
-            r = a[i] * temp + b[i]*r
-        c.append(r)
-        print(len(c))
-        c = c[::-1]
-        return Floatchiffre(sign, c, exponent)
 
 class Entierchiffre:
     def __init__(self, bits):
@@ -272,13 +290,25 @@ class Entierchiffre:
         return c<<(n-1)
 
     def __mul__(self, n):
-        if type(n)==Bitchiffre:
+        if type(n) == Bitchiffre:
             c = []
             for b in self.bits:
                 c.append(n*b)
             return Entierchiffre(c)
-        elif type(n)==Entierchiffre:
+
+        elif type(n) == Entierchiffre:
             c = self.publique.chiffrerentier(0)
             for b in n.bits[::-1]:
                 c = (c<<1) + b*self
             return c
+
+        elif type(n) == int:
+            c = self.publique.chiffrerentier(0)
+            for b in bin(n)[2:]:
+                c = (c<<1)
+                if b=='1':
+                    c = c + self
+            return c
+
+    def __rmul__(self, n):
+        return self.__mul__(n)

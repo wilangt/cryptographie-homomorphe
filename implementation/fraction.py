@@ -127,4 +127,9 @@ class Fraction:
             return self.p*x.q>=self.q*x.p
 
     def __round__(self):
-        return self.p//self.q
+        quotient = self.p//self.q
+        reste = self.p % self.q
+        if 2*reste >= self.q:
+            return quotient + 1
+        else:
+            return quotient
