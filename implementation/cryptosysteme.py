@@ -30,7 +30,7 @@ def genererCS(l,m):
             pc *= clement.chiffrerbit(t)
             j+=1
             produit_correct = (p==milan.dechiffrerbit(pc))
-            if not produit_correct : print(j)
+            if not produit_correct : pass #print(j)
             if j>m :
                 return milan, clement
                 print("clefs OK")

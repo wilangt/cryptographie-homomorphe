@@ -1,6 +1,6 @@
 # Étude et implémentation d’un schéma de chiffrement homomorphe
 
-TIPE réalisé pendant l'année scolaire 2018-2019 par Clément Rambaud et Milan Gonzalez-Thauvin. La présentation orale (individuelle) a été sanctionné par la note de **15,7/20** (Tétraconcours)
+TIPE réalisé pendant l'année scolaire 2018-2019 par Clément Rambaud et Milan Gonzalez-Thauvin. Ma présentation orale (individuelle) a été sanctionné par la note de **15,7/20** (Tétraconcours)
 
 ![illustration](cryptographie_homomorphe.png)
 

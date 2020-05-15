@@ -1,4 +1,4 @@
-from cryptosysteme2 import *
+from cryptosysteme import *
 import matplotlib.pyplot as plt
 
 def tempsclefs(debut, fin, pas=1, rep=1):
