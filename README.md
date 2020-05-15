@@ -66,3 +66,10 @@ b = bob.chiffrerentier(4)
 c = (a*b)
 print(alice.dechiffrerentier(c))
 ```
+
+## Performances temporelles
+
+![generations_clefs](presentation_milan/images/generations_clefs.png)
+![generations_chiffre](presentation_milan/images/generations_chiffre.png)
+![somme](presentation_milan/images/somme.png)
+![produit](presentation_milan/images/produit.png)
