@@ -43,11 +43,11 @@ Quelles sont les applications concrètes de la cryptographie homomorphe aujourd'
 
 ## Références bibliographiques
 
-\[1] Jung Hee Cheon, Damien Stehlé: Fully homomorphic encryption over the integers revisited, 2016
-\[2] M. van Dijk, C. Gentry, S. Helevi, V. Vaikuntanathan: Fully homomorphic encryption over the integers, 2010
-\[3] G. Zémor: Cours de cryptographie, 2000 Cassini
-\[4] J. A. Buchmann, J. Vélu: Introduction a la cryptographie, 2006 Dunod
-\[5] C. Gentry: Fully Homomorphic Encryption Using Ideal Lattices, 2009
+\[1] Jung Hee Cheon, Damien Stehlé: Fully homomorphic encryption over the integers revisited, 2016  
+\[2] M. van Dijk, C. Gentry, S. Helevi, V. Vaikuntanathan: Fully homomorphic encryption over the integers, 2010  
+\[3] G. Zémor: Cours de cryptographie, 2000 Cassini  
+\[4] J. A. Buchmann, J. Vélu: Introduction a la cryptographie, 2006 Dunod  
+\[5] C. Gentry: Fully Homomorphic Encryption Using Ideal Lattices, 2009  
 \[6] C. Gentry: A fully homomorphic encryption scheme, 2009
 
 
