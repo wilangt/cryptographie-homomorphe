@@ -58,13 +58,15 @@ Implémentation en Python3.
 ## Exemple d'utilisation
 
 ```
-lambdaa, nb_operations = 32, 100
+$ python3 -i __main__.py
 
-alice, bob = genererCS(lambdaa, nb_operations)
-a = bob.chiffrerentier(5)
-b = bob.chiffrerentier(4)
-c = (a*b)
-print(alice.dechiffrerentier(c))
+>> lambdaa, nb_operations = 32, 100
+>> alice, bob = genererCS(lambdaa, nb_operations)
+>> a = bob.chiffrerentier(5)
+>> b = bob.chiffrerentier(4)
+>> c = (a*b)
+>> print(alice.dechiffrerentier(c))
+20
 ```
 
 ## Performances temporelles
