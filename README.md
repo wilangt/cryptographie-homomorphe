@@ -58,7 +58,7 @@ Implémentation en Python3.
 ## Exemple d'utilisation
 
 ```
-lambdaa, nb_operations = 50, 1000
+lambdaa, nb_operations = 32, 100
 
 alice, bob = genererCS(lambdaa, nb_operations)
 a = bob.chiffrerentier(5)
